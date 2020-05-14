@@ -1,0 +1,24 @@
+How to deploy spinnaker?
+Volodymyr Khomenko edited this page 39 minutes ago · 2 revisions
+Downloading stable spinnaker
+
+./helm fetch stable/spinnaker --untar
+After spinnaker has been downloaded we should modify values.yaml
+
+cd spinnaker
+vim values.yaml
+Use following example to be able to deploy
+
+ingress:
+  enabled: true
+  host: build.devops-chicago.com
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-hostk8s-prod
+  tls:
+   - secretName: spinnaker-secret
+     hosts:
+      - build.devops-chicago.com
+After you finish with modification
+
+./helm install spinnaker/ --tiller-namespace tiller
